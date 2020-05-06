@@ -1,20 +1,38 @@
 name: Essentials
 main: me.danny.essentials.main.Main
-version: 1.1
+version: 1.2
 author: Danny
 commands:
-    ce:
+    it:
      description: Use to edit item.
      usage: |
-        Use the /help ce [subcommand] for more information
-        /ce lore - Use to edit the  lore of item
-        /ce en - Use to edit the enchant of item
-    ce lore:
+        Use the /help it [subcommand] for more information
+        /it lore - Use to edit the  lore of item
+        /it en - Use to edit the enchant of item
+    it lore:
      description: Use to edit lore of item.
      usage: |
-        /ce lore add - Use to add the lore to the item !
-        /ce lore remove - Use to remove the lore of the item !
-        /ce lore set - Use to set the new lore for the item !
-    ce lore add:
+        /it lore add - Use to add the lore to the item !
+        /it lore remove - Use to remove the lore of the item !
+        /it lore set - Use to set the new lore for the item !
+    it lore add:
      description: Use to add lore of item.
-     usage: /ce lore add [item]
+     usage: /it lore add [lore]
+    it name:
+     description: Use to edit lore of item.
+     usage: |
+        /it name set - Use to edit the name of item !
+    it name set:
+     description: Use to set the name of item.
+     usage: /it name set [name] 
+    it en :
+     description: Use to edit enchant of item.
+     usage: |
+        /it en add - Use to add the enchant to the item !
+        /it en remove - Use to remove the lore of the item !
+     it en add:
+      description: Use to add the enchant to item.
+      usage: /it name add [enchant]     
+     it en remove:
+      description: Use to remove the enchant of item.
+      usage: /it name remove [enchant]    
