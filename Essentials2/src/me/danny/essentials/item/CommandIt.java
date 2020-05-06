@@ -151,28 +151,43 @@ public class CommandIt implements CommandExecutor {
 						 }
 						 else if(args[0].equalsIgnoreCase("en"))
 						 {
-							 if(args[1].equalsIgnoreCase("add")) 
-							 {
-								 if(args[2] == null && args[3] == null) 
-								 {
-									 player.sendMessage(ChatColor.RED + "Justmine: " + ChatColor.DARK_RED + "Nothing to add !");
-								 }
-								 else 
-								 {
-									 try 
+							 switch(args[1]) {
+							 	case "add":
+							 		if(args[2] == null && args[3] == null) 
 									 {
-										 mitem.addEnchant(Enchantment.getByKey(NamespacedKey.minecraft(args[2])), Integer.parseInt(args[3]) , true);
-										 pitem.setItemMeta(mitem);
-										 player.getInventory().setItemInMainHand(pitem);
-										 player.sendMessage(ChatColor.RED + "Justmine: " + ChatColor.DARK_RED + "The Enchant you want to add successed !");
+										 player.sendMessage(ChatColor.RED + "Justmine: " + ChatColor.DARK_RED + "Nothing to add !");
 									 }
-									 catch (Exception e)
+									 else 
 									 {
-										 player.sendMessage(ChatColor.RED + "Justmine: " + ChatColor.DARK_RED + "Invaled name of Enchantment you want to add !");
+										 try 
+										 {
+											 mitem.addEnchant(Enchantment.getByKey(NamespacedKey.minecraft(args[2].toLowerCase())), Integer.parseInt(args[3]) , true);
+											 pitem.setItemMeta(mitem);
+											 player.getInventory().setItemInMainHand(pitem);
+											 player.sendMessage(ChatColor.RED + "Justmine: " + ChatColor.DARK_RED + "The Enchant you want to add successed !");
+										 }
+										 catch (Exception e)
+										 {
+											 player.sendMessage(ChatColor.RED + "Justmine: " + ChatColor.DARK_RED + "Invaled name of Enchantment you want to add !");
+										 }
+			
 									 }
-		
-								 }
+							 		break;
+							 	case "remove":
+									if (args.length < 2 && mitem.hasEnchants() == false) 
+									{
+										player.sendMessage(ChatColor.RED + "Justmine: " + ChatColor.AQUA + "No Enchant to remove  !");
+									}
+									else 
+									{
+										
+										
+									}
+							 		break;
+					
 							 }
+							 
+
 						 }
 					}
 
@@ -182,6 +197,10 @@ public class CommandIt implements CommandExecutor {
 		 		  player.sendMessage(ChatColor.RED + "[Justmine]: " + ChatColor.AQUA + "Please use /help ce to know more information !");
 			 }
 			
+		}
+		else 
+		{
+            sender.sendMessage(ChatColor.RED +"Console cannot do this!");
 		}
 		return true;
 	}
