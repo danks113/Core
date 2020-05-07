@@ -2,6 +2,7 @@ package me.danny.essentials.item;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
@@ -13,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import io.netty.handler.codec.ReplayingDecoder;
 import net.minecraft.server.v1_15_R1.Material;
 
 
@@ -26,6 +26,18 @@ public class CommandIt implements CommandExecutor {
 		return false;
 	}
 	
+	public Enchantment getEnchantmentInMap(Map<Enchantment, Integer> enchants, int index) {
+		int count = 0;
+		for (Enchantment enchant : enchants.keySet()) {
+			if (count == index) {
+				return enchant;
+			}
+			count++;
+		}
+		return null;
+	}
+	
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(sender instanceof Player) 
@@ -35,7 +47,7 @@ public class CommandIt implements CommandExecutor {
 			{
 					ItemStack pitem = player.getInventory().getItemInMainHand();
 					ItemMeta mitem = pitem.getItemMeta();
-					if(mitem == null || mitem.equals(Material.AIR)) 
+					if(mitem == null || mitem.equals(Material.AIR))
 					{
 						player.sendMessage(ChatColor.RED + "Justmine: " +ChatColor.DARK_RED + "You have no item to do this !");
 					}
@@ -137,7 +149,7 @@ public class CommandIt implements CommandExecutor {
 											String name = "";
 											for (int i =2; i < args.length ; i++) 
 											{
-												name += "" + args[i].replaceAll("&", "§");;
+												name += "" + args[i].replaceAll("&", "§");
 											}
 											mitem.setDisplayName(name);
 											pitem.setItemMeta(mitem);
@@ -163,6 +175,7 @@ public class CommandIt implements CommandExecutor {
 										 {
 											 mitem.addEnchant(Enchantment.getByKey(NamespacedKey.minecraft(args[2].toLowerCase())), Integer.parseInt(args[3]) , true);
 											 pitem.setItemMeta(mitem);
+//											 Bukkit.getServer().broadcastMessage(mitem.getEnchants().toString());
 											 player.getInventory().setItemInMainHand(pitem);
 											 player.sendMessage(ChatColor.RED + "Justmine: " + ChatColor.DARK_RED + "The Enchant you want to add successed !");
 										 }
@@ -180,7 +193,41 @@ public class CommandIt implements CommandExecutor {
 									}
 									else 
 									{
-										
+										Map<Enchantment, Integer> enchantsList = mitem.getEnchants();
+										try 
+										 {
+//											 mitem.addEnchant(Enchantment.getByKey(NamespacedKey.minecraft(args[2].toLowerCase())), 0, true);
+											int index = Integer.parseInt(args[2]);
+											 if (isNumberInRange(0, enchantsList.size(), index)) {
+//												 mitem.removeEnchant(Enchantment.getByKey(NamespacedKey.minecraft(args[2].toLowerCase())));
+//												 pitem.setItemMeta(mitem);
+//												 player.getInventory().setItemInMainHand(pitem);
+												 index -= 1;
+												 Enchantment enchant = getEnchantmentInMap(enchantsList, index);
+												 if (enchant != null) {
+													 mitem.removeEnchant(enchant);
+													 pitem.setItemMeta(mitem);
+													 player.getInventory().setItemInMainHand(pitem);
+													 player.sendMessage(ChatColor.RED + "Justmine: " + ChatColor.DARK_RED + "The Enchant you want to remove successed !");
+												 }
+												 else {
+													 throw new Exception("null pointer");
+												 }
+											 }
+											 else {
+												 throw new Exception("out of range");
+											 }
+										 }
+										 catch (Exception e)
+										 {
+											 if (e.getLocalizedMessage().equals("null pointer")) {
+												 player.sendMessage(ChatColor.RED + "Justmine: " + ChatColor.DARK_RED + "Invalid number to remove !");
+											 }
+											 else if (e.getLocalizedMessage().equals("out of range")) {
+												 player.sendMessage(ChatColor.RED + "Justmine: " + ChatColor.DARK_RED + "Please input number in range [0, " + enchantsList.size() + "]");
+											 }
+											 else player.sendMessage(ChatColor.RED + "Justmine: " + ChatColor.DARK_RED + "Invalid name of Enchantment you want to remove !");
+										 }
 										
 									}
 							 		break;
